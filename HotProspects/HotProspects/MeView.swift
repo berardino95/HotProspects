@@ -10,8 +10,8 @@ import SwiftUI
 
 struct MeView: View {
     
-    @State private var name = "Anonymous"
-    @State private var emailAddress = "you@yoursite.com"
+    @AppStorage("name") private var name = "Name"
+    @AppStorage("email") private var emailAddress = "you@email.com"
     @State private var qrCode = UIImage()
     
     let context = CIContext()
@@ -23,10 +23,12 @@ struct MeView: View {
                 TextField("Name", text: $name)
                     .textContentType(.name)
                     .font(.title)
+                    .textInputAutocapitalization(TextInputAutocapitalization.words)
                 
                 TextField("Email address", text: $emailAddress)
                     .textContentType(.emailAddress)
                     .font(.title)
+                    .textInputAutocapitalization(TextInputAutocapitalization.never)
                 
                 Image(uiImage: qrCode)
                     .resizable()
@@ -43,6 +45,7 @@ struct MeView: View {
                     }
                 
             }
+            .autocorrectionDisabled(true)
             .navigationTitle("Your code")
             .onAppear{ updateCode() }
             .onChange(of: name) { _ in updateCode() }
